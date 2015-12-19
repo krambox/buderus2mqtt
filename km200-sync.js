@@ -6,7 +6,7 @@ var sleep = require('sleep').sleep;
 
 var key = new Buffer('763db139cca921ee370aabcb7be2c530abca1ebdeb741fcf68f5910fd0b77990', 'hex');
 
-var host="192.168.2.162";
+var host="192.168.1.108";
 
 var APIs = [
   	"/gateway/DateTime",
