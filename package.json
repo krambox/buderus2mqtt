@@ -21,6 +21,7 @@
     "buffertrim": "^1.0.0",
     "mcrypt": "^0.1.9",
     "mqtt": "^1.6.1",
+    "node-yaml-config": "0.0.3",
     "request": "^2.67.0",
     "sleep": "^3.0.0"
   }

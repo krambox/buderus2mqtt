@@ -3,10 +3,16 @@ var request = require('request');
 var async = require('async');
 var MCrypt = require('mcrypt').MCrypt;
 var buffertrim = require('buffertrim');
+var yaml_config = require('node-yaml-config');
 
-var key = new Buffer('763db139cca921ee370aabcb7be2c530abca1ebdeb741fcf68f5910fd0b77990', 'hex');
+var config = yaml_config.load(__dirname + '/config.yml');
+console.log(__dirname + '/config.yml');
+console.log(config); 
 
-var host="192.168.1.108";
+
+var key = new Buffer(config.key, 'hex');
+
+var host=config.host;
 
 var APIs = [
   
