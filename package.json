@@ -4,7 +4,8 @@
   "description": "km200 to mqtt gateway",
   "main": "km200mqtt.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./km200mqtt.js config.yml"
   },
   "repository": {
     "type": "git",
@@ -26,4 +27,5 @@
     "npm": "^3.5.3",
     "request": "^2.67.0",
     "sleep": "^3.0.0"
+  }
 }

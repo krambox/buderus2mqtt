@@ -7,7 +7,7 @@
 			"request": "launch",
 			"program": "km200mqtt.js",
 			"stopOnEntry": false,
-			"args": [],
+			"args": ["config.yml"],
 			"cwd": ".",
 			"runtimeExecutable": null,
 			"runtimeArgs": [
