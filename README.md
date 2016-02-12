@@ -2,11 +2,12 @@
 
 ##Config
 
-  default:
-    key: KEY
-    host: <hostname>
-    mqttHost: mqtt://<hostname>
-
+```
+default:
+  key: KEY
+  host: <hostname>
+  mqttHost: mqtt://<hostname>
+```
 
 ##Key
 
