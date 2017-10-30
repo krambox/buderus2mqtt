@@ -6,9 +6,9 @@ var buffertrim = require('buffertrim');
 var mqtt = require('mqtt');
 require('require-yaml');
 
-var config = require('./config.yml');
 console.log('Starting km200 to mqtt');
-console.log(__dirname + '/config.yml');
+console.log(process.env.km200_config);
+var config = require(process.env.km200config);
 console.log(config);
 
 var key = new Buffer(config.km200.key, 'hex');
@@ -54,7 +54,7 @@ function getKM200 (host, measurement, done) {
             type: result.type,
             minValue: result.minValue,
             maxValue: result.maxValue,
-            allowedValues: result.allowedValues
+            allowedValues: result.type
           }
         }
       }

@@ -33,3 +33,5 @@ WORKDIR /root/app
 COPY --from=dependencies /root/app/prod_node_modules ./node_modules
 # copy app sources
 COPY . .
+VOLUME ["/data"]
+CMD ./km200mqtt.js 
