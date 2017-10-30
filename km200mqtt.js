@@ -34,7 +34,7 @@ function getKM200 (host, measurement, done) {
       var dataBuffer = buffertrim.trimEnd(desEcb.decrypt(bodyBuffer, 'base64'));
       var result = JSON.parse(dataBuffer.toString());
       console.log(new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''), result.id, result.value, result.unitOfMeasure, measurement.groupAddress,measurement.type);
-      var topic='km200' + result.id;
+      var topic='km200/status' + result.id;
       var value='' + result.value;
       mqttCon.publish(topic,value, {retain: true}, function () {
         console.log(topic, value);

@@ -3,11 +3,21 @@
 ##Config
 
 ```
-default:
-  key: KEY
-  host: <hostname>
-  mqttHost: mqtt://<hostname>
+km200:
+  key: <KEY>
+  host: <km200 hostname or ip >
+mqtt:
+  server: <mqtt connection>
+  topic: km200/
+measurements:
+  - url: '/system/sensors/temperatures/chimney'
+    type: 'DPT9.001'
+  ...
 ```
+
+##Scan KM200 
+
+./scan.js
 
 ##Key
 
