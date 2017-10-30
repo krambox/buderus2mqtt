@@ -3,21 +3,24 @@ var request = require('request');
 var async = require('async');
 var MCrypt = require('mcrypt').MCrypt;
 var buffertrim = require('buffertrim');
-var yaml_config = require('node-yaml-config');
 
-var config = yaml_config.load(__dirname + '/config.yml');
+require('require-yaml');
+var config = require('./config.yml');
+
 console.log(__dirname + '/config.yml');
 console.log(config);
 
-var key = new Buffer(config.key, 'hex');
+var key = new Buffer(config.km200.key, 'hex');
 
-var host = config.host;
+var host = config.km200.host;
 
 var APIs = [
   '/gateway',
-  '/heatingCircuits',
-  '/heatSources',
   '/system',
+  '/heatSources',
+  '/recordings',
+  '/notifications',
+  '/heatingCircuits',
   '/solarCircuits',
   '/dhwCircuits'
 ];
@@ -47,22 +50,48 @@ function getKM200 (host, api, done) {
     } else {
       done({error: error, statusCode: response.statusCode});
     }
-  });
+  }); 
 }
 
 function callKM200 (host, APIs) {
   var API = APIs.shift();
-  // console.log(API)
   getKM200(host, API, function (result, json) {
-    // console.log(result); 
-    if (json && json.hasOwnProperty('type') && json.type == 'refEnum') {
+    console.error(API,APIs.length)
+    if (json===undefined) {
+      console.log(API,'-');  
+    }
+    else if (json && json.hasOwnProperty('type') && json.type == 'refEnum') {
       json.references.forEach(function (e) {
-        APIs.push(e.id);
+        APIs.unshift(e.id);
       });
     }
+    else if (json.type == 'yRecording') {
+        console.log(API,'yRecording');
+    }
+    else if (json.type == 'switchProgram') {
+        console.log(API,'switchProgram');
+    }
+    else if (json.type == 'errorList') {
+        console.log(API,'errorList');
+    }
     else if (json && json.hasOwnProperty('value')) {
-      console.log(json.id, json.type, json.value, json.unitOfMeasure);
-    // console.log(json)
+      console.log(API,json.id, json.type, json.value, 
+        json.unitOfMeasure!=undefined?json.unitOfMeasure:'',
+        json.writeable==1?'writable':'',
+        json.recordable==1?'recordable':'',
+        json.minValue!=undefined?'['+json.minValue+', ':'[',
+        json.maxValue!=undefined?json.maxValue+']':']');
+        if (json.allowedValues) {
+          console.log("===============");
+          console.log(json.allowedValues);
+          console.log("===============");
+        }
+    }
+    else{
+      console.log("==============="); 
+      console.log(API);  
+      console.log("==============="); 
+      console.log(json); 
     }
     // console.log(APIs.length); 
 
