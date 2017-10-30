@@ -33,11 +33,17 @@ function getKM200 (host, measurement, done) {
       var bodyBuffer = new Buffer(body, 'base64');
       var dataBuffer = buffertrim.trimEnd(desEcb.decrypt(bodyBuffer, 'base64'));
       var result = JSON.parse(dataBuffer.toString());
-      console.log(new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''), result.id, result.value, result.unitOfMeasure, measurement.groupAddress,measurement.type);
+      var seconds = Math.floor(new Date() / 1000);
+      var state = { 
+        ts: seconds,
+        val: result.value,
+        km200_unitOfMeasure: result.unitOfMeasure
+      }
+      console.log(dataBuffer.toString());
       var topic='km200/status' + result.id;
-      var value='' + result.value;
+      var value=JSON.stringify(state);
       mqttCon.publish(topic,value, {retain: true}, function () {
-        console.log(topic, value);
+         //console.log(topic, value);
       });
       done(null);
     } else {
