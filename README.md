@@ -1,6 +1,6 @@
 # mqtt-km200
 
-##Config
+## Config
 
 config.yml example
 
@@ -18,11 +18,11 @@ measurements:
 ```
 
 
-##Scan KM200 
+## Scan KM200 
 
 ./scan.js
 
-##Key
+## Key
 
 Generated with https://ssl-account.com/km200.andreashahn.info/
 
