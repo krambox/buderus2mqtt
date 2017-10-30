@@ -20,6 +20,8 @@ var mqttCon = mqtt.connect(config.mqtt.server);
 var desEcb = new MCrypt('rijndael-128', 'ecb');
 desEcb.open(key);
 
+var writables= {};
+
 function getKM200 (host, measurement, done) {
   var options = {
     url: 'http://' + host + measurement.url,
@@ -39,7 +41,15 @@ function getKM200 (host, measurement, done) {
         val: result.value,
         km200_unitOfMeasure: result.unitOfMeasure
       }
-      console.log(dataBuffer.toString());
+      if (result.writeable === 1) {
+        if (writables[result.id]==null) {
+          console.log('Writable: '+result.id+': '+result.minValue+' - '+result.maxValue);
+          writables[result.id]= {
+            minValue: result.minValue,
+            maxValue: result.maxValue
+          }
+        }
+      }
       var topic='km200/status' + result.id;
       var value=JSON.stringify(state);
       mqttCon.publish(topic,value, {retain: true}, function () {
