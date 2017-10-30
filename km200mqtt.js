@@ -43,10 +43,18 @@ function getKM200 (host, measurement, done) {
       }
       if (result.writeable === 1) {
         if (writables[result.id]==null) {
-          console.log('Writable: '+result.id+': '+result.minValue+' - '+result.maxValue);
+          //console.log(dataBuffer.toString());
+          if (result.allowedValues) {
+            console.log('Writable: '+result.id+' ('+result.type+'): '+JSON.stringify(result.allowedValues));
+          }
+          else {
+            console.log('Writable: '+result.id+' ('+result.type+'): '+result.minValue+' - '+result.maxValue);
+          }
           writables[result.id]= {
+            type: result.type,
             minValue: result.minValue,
-            maxValue: result.maxValue
+            maxValue: result.maxValue,
+            allowedValues: result.allowedValues
           }
         }
       }
