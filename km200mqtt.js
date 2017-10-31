@@ -11,16 +11,34 @@ console.log(process.env.km200_config);
 var config = require(process.env.km200config);
 console.log(config);
 
-var key = new Buffer(config.km200.key, 'hex');
+var key = Buffer.from(config.km200.key, 'hex');
 var km200host = config.km200.host;
 
-console.log('Connect mqtt: '+config.mqtt.server);
+console.log('Connect mqtt: ' + config.mqtt.server);
 var mqttCon = mqtt.connect(config.mqtt.server);
 
 var desEcb = new MCrypt('rijndael-128', 'ecb');
 desEcb.open(key);
 
-var writables= {};
+var writables = {};
+
+function mnemonizeWritable (result) {
+  if (result.writeable === 1) {
+    if (writables[result.id] == null) {
+      if (result.allowedValues) {
+        console.log('Writable: ' + result.id + ' (' + result.type + '): ' + JSON.stringify(result.allowedValues));
+      } else {
+        console.log('Writable: ' + result.id + ' (' + result.type + '): ' + result.minValue + ' - ' + result.maxValue);
+      }
+      writables[result.id] = {
+        type: result.type,
+        minValue: result.minValue,
+        maxValue: result.maxValue,
+        allowedValues: result.type
+      };
+    }
+  }
+}
 
 function getKM200 (host, measurement, done) {
   var options = {
@@ -31,37 +49,17 @@ function getKM200 (host, measurement, done) {
     }
   };
   request.get(options, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var bodyBuffer = new Buffer(body, 'base64');
-      var dataBuffer = buffertrim.trimEnd(desEcb.decrypt(bodyBuffer, 'base64'));
-      var result = JSON.parse(dataBuffer.toString());
-      var seconds = Math.floor(new Date() / 1000);
-      var state = { 
-        ts: seconds,
+    if (!error && response.statusCode === 200) {
+      var result = JSON.parse(buffertrim.trimEnd(desEcb.decrypt(Buffer.from(body, 'base64'), 'base64')).toString());
+      mnemonizeWritable(result);
+      var topic = 'km200/status' + result.id;
+      var state = {
+        ts: Math.floor(new Date() / 1000),
         val: result.value,
         km200_unitOfMeasure: result.unitOfMeasure
-      }
-      if (result.writeable === 1) {
-        if (writables[result.id]==null) {
-          //console.log(dataBuffer.toString());
-          if (result.allowedValues) {
-            console.log('Writable: '+result.id+' ('+result.type+'): '+JSON.stringify(result.allowedValues));
-          }
-          else {
-            console.log('Writable: '+result.id+' ('+result.type+'): '+result.minValue+' - '+result.maxValue);
-          }
-          writables[result.id]= {
-            type: result.type,
-            minValue: result.minValue,
-            maxValue: result.maxValue,
-            allowedValues: result.type
-          }
-        }
-      }
-      var topic='km200/status' + result.id;
-      var value=JSON.stringify(state);
-      mqttCon.publish(topic,value, {retain: true}, function () {
-         //console.log(topic, value);
+      };
+      mqttCon.publish(topic, JSON.stringify(state), { retain: true }, function () {
+        // console.log(topic, value);
       });
       done(null);
     } else {
@@ -77,9 +75,11 @@ function checkKM200 () {
         cb(done);
       });
     },
-    function (err, result) {}
+    function (err, result) {
+      console.log(err);
+    }
   );
 }
 
 checkKM200();
-var timer = setInterval(checkKM200, 60000);
+setInterval(checkKM200, 60000);
