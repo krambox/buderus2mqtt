@@ -81,7 +81,7 @@ mqttCon.on('message', (topic, message) => {
   }
 });
 
-function getKM200( url, done) {
+function getKM200 (url, done) {
   var options = {
     url: 'http://' + km200host + url,
     headers: {
@@ -109,7 +109,7 @@ function getKM200( url, done) {
   });
 }
 
-function checkKM200() {
+function checkKM200 () {
   async.eachSeries(config.measurements,
     function (measurement, cb) {
       getKM200(measurement.url, function (done) {
