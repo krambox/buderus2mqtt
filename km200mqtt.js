@@ -57,7 +57,7 @@ mqttCon.on('message', (topic, message) => {
           (writable.valueType === 'floatValue' && parseFloat(value) >= writable.minValue && parseFloat(value) <= writable.maxValue)) {
         console.log('WRITE: ' + value);
         const postValue = desEcb.encrypt(JSON.stringify({
-          value: parseFloat(value)
+          value: writable.valueType === 'stringValue' ? value : parseFloat(value)
         })).toString('base64');
         var options = {
           url: 'http://' + km200host + url,
