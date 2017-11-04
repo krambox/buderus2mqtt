@@ -12,8 +12,9 @@
   "dependencies": {
     "async": "^2.1.5",
     "buffertrim": "^1.0.0",
+    "cli-table": "^0.3.1",
     "mcrypt": "^0.1.9",
-    "mqtt": "^2.4.0",
+    "mqtt": "^2.14.0",
     "node-yaml-config": "^0.0.4",
     "request": "^2.67.0",
     "require-yaml": "^0.0.1",

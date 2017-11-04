@@ -13,8 +13,25 @@ mqtt:
   topic: km200/
 measurements:
   - url: '/system/sensors/temperatures/chimney'
-    type: 'DPT9.001'
-  ...
+  - url: '/system/sensors/temperatures/outdoor_t1'
+  - url: '/system/sensors/temperatures/supply_t1_setpoint'
+  - url: '/heatSources/actualSupplyTemperature'
+  - url: '/heatingCircuits/hc1/temperatureLevels/day'
+  - url: '/heatingCircuits/hc1/temperatureLevels/night'
+  - url: '/heatingCircuits/hc1/roomtemperature'
+  - url: '/heatingCircuits/hc1/temperatureRoomSetpoint'
+  - url: '/dhwCircuits/dhw1/actualTemp'
+  - url: '/dhwCircuits/dhw1/setTemperature'
+  - url: '/system/appliance/workingTime/centralHeating'
+  - url: '/system/appliance/workingTime/secondBurner'
+  - url: '/system/appliance/workingTime/totalSystem'
+  - url: '/dhwCircuits/dhw1/workingTime'
+  - url: '/system/appliance/numberOfStarts'
+  - url: '/system/appliance/fanSpeed'
+  - url: '/system/appliance/flameCurrent'
+  - url: '/system/appliance/actualPower'
+  - url: '/system/appliance/powerSetpoint'
+  - url: '/dhwCircuits/dhw1/waterFlow'
 ```
 
 

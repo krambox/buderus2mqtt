@@ -1,19 +1,22 @@
 #!/usr/bin/env node
 var request = require('request');
-var async = require('async');
 var MCrypt = require('mcrypt').MCrypt;
 var buffertrim = require('buffertrim');
 
 require('require-yaml');
 var config = require('./config.yml');
 
-console.log(__dirname + '/config.yml');
-console.log(config);
+console.error(__dirname + '/config.yml');
+console.error(config);
+
+var Table = require('cli-table');
+var table = new Table({
+  head: ['id', 'type', 'value','unit','Rec','Write','min','max','values'],
+  colWidths: [60, 16, 25, 10, 6, 6, 6, 12, 80]
+});
 
 var key = Buffer.from(config.km200.key, 'hex');
-
 var host = config.km200.host;
-
 var APIs = [
   '/gateway',
   '/system',
@@ -48,7 +51,7 @@ function getKM200 (host, api, done) {
         done({ error: e });
       }
     } else {
-      done({ error: error, statusCode: response.statusCode });
+      done({ error: error });
     }
   });
 }
@@ -57,40 +60,33 @@ function callKM200 (host, APIs) {
   var API = APIs.shift();
   getKM200(host, API, function (result, json) {
     console.error(API, APIs.length);
-    if (json === undefined) {
-      console.log(API, '-');
-    } else if (json && json.hasOwnProperty('type') && json.type == 'refEnum') {
+    if (json !== undefined && json.type!=='refEnum') {
+      var entry = [
+        json.id ? json.id :'',
+        json.type ? json.type :'',
+        json.value ? json.value :'',
+        json.unitOfMeasure ? json.unitOfMeasure :'',
+        json.recordable ? json.recordable :'',
+        json.writeable ? json.writeable :'',
+        json.minValue ? json.minValue :'',
+        json.maxValue ? json.maxValue :'',
+        json.allowedValues ? JSON.stringify(json.allowedValues) : ''
+      ];
+      table.push(entry);
+    }
+    if (json !== undefined && json.type!=='refEnum' && json.value===undefined) {
+      console.error(json);
+    }
+    if (json && json.hasOwnProperty('type') && json.type == 'refEnum') {
       json.references.forEach(function (e) {
         APIs.unshift(e.id);
       });
-    } else if (json.type === 'yRecording') {
-      console.log(API, 'yRecording');
-    } else if (json.type === 'switchProgram') {
-      console.log(API, 'switchProgram');
-    } else if (json.type === 'errorList') {
-      console.log(API, 'errorList');
-    } else if (json && json.hasOwnProperty('value')) {
-      console.log(API, json.id, json.type, json.value,
-        json.unitOfMeasure !== undefined ? json.unitOfMeasure : '',
-        json.writeable === 1 ? 'writable' : '',
-        json.recordable === 1 ? 'recordable' : '',
-        json.minValue !== undefined ? '[' + json.minValue + ', ' : '[',
-        json.maxValue !== undefined ? json.maxValue + ']' : ']');
-      if (json.allowedValues) {
-        console.log('===============');
-        console.log(json.allowedValues);
-        console.log('===============');
-      }
-    } else {
-      console.log('===============');
-      console.log(API);
-      console.log('===============');
-      console.log(json);
     }
-    // console.log(APIs.length);
 
     if (APIs.length) {
       callKM200(host, APIs);
+    } else {
+      console.log(table.toString());
     }
   });
 }
