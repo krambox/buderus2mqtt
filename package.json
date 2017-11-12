@@ -1,7 +1,7 @@
 {
   "name": "buderus2mqtt",
   "version": "0.0.1",
-  "description": "km200 to mqtt bridge fpr mqtt-smarthome",
+  "description": "km200 to mqtt bridge for mqtt-smarthome",
   "main": "km20knx.js",
   "scripts": {
     "start": "node ./km20knx.js config.yml"
@@ -9,6 +9,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/krambox/buderus2mqtt"
+  },
+  "bugs": {
+    "url": "https://github.com/krambox/buderus2mqtt/issues"
   },
   "keywords": [
     "mqtt",
