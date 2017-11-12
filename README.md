@@ -1,6 +1,29 @@
 # mqtt-km200
 
-## Config
+Written and (C) 2015-17 Kai Kramer, based on an idea and code from Andreas Hahn.
+
+Provided under the terms of the MIT license.
+
+## Overview 
+
+buderus2mqtt is a gateway between a KM200 Buderus internet gateway and MQTT with the  https://github.com/mqtt-smarthome topic and payload format.
+
+## Installation
+
+The recommended away is via docker hub.
+
+    docker run --env-file ./km200.env -it km200 krambox/buderus2mqtt
+
+Or via direct call
+
+    ./km200mqtt.js -u mqtt://192.168.1.13 -k 192.168.1.162 -p <AES key>
+
+
+### Key
+
+AES key generator for the KM200 web gateway:  https://ssl-account.com/km200.andreashahn.info/
+
+### Configuration
 
 config.yml example
 
@@ -33,28 +56,21 @@ Env file
 ```
 KM200_url=mqtt://192.168.1.13
 KM200_config=./config.yml
-KM200_passcode=<KEY generated with https://ssl-account.com/km200.andreashahn.info/ >
+KM200_passcode=<AES k generated with https://ssl-account.com/km200.andreashahn.info/ >
 KM200_km200=192.168.1.162
 ```
 
 ## Scan KM200 
 
-Scans all readings from km200 write a table to std out. 
+The tool scan. js is used to determine the possible and useful values. This allows you to retrieve the value space of the Installed KM200 and display it in a table on the console. 
 
-Example for Buderus GB 135
-
+```
 ./scan.js -p <KEY generated with https://ssl-account.com/km200.andreashahn.info/ > -k 192.168.1.162 > gb135.txt
+```
 
-## Start
 
-./km200mqtt.js -u mqtt://192.168.1.13 -k 192.168.1.162 -p <KEY>
-
-## Key
-
-Generated with https://ssl-account.com/km200.andreashahn.info/
-
-## Docker
+## Build and run local Docker container
 
     docker build -t km200 .
 
-    docker run --env km200config=/data/config.yml  -v /Volumes/data/smarthome:/data -it km200 
+    docker run --env-file ./km200.env -it km200 krambox/buderus2mqtt 
