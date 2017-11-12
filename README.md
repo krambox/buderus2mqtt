@@ -1,6 +1,6 @@
 # mqtt-km200
 
-Written and (C) 2015-17 Kai Kramer, based on an idea and code from Andreas Hahn.
+Written and (C) 2015-17 Kai Kramer, based on an idea and code from Andreas Hahn. Build with https://github.com/hobbyquaker/xyz2mqtt-skeleton from Sebastian Raff.
 
 Provided under the terms of the MIT license.
 
@@ -17,7 +17,6 @@ The recommended away is via docker hub.
 Or via direct call
 
     ./km200mqtt.js -u mqtt://192.168.1.13 -k 192.168.1.162 -p <AES key>
-
 
 ### Key
 
