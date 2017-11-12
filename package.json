@@ -11,7 +11,8 @@
   "engineStrict": true,
   "scripts": {
     "test": "semistandard && exit 0",
-    "start": "node ./km20knx.js"
+    "start": "node ./km20knx.js",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
