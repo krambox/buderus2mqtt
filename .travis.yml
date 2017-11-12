@@ -3,11 +3,14 @@ cache:
   directories:
     - ~/.npm
 notifications:
+  email: false
 node_js:
+  - '9'
+  - '8'
   - '6'
-before_script:
+  before_script:
   - npm prune
-after_success:
+  after_success:
   - npm run semantic-release
 branches:
   except:

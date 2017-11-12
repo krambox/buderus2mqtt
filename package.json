@@ -1,6 +1,6 @@
 {
   "name": "buderus2mqtt",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "description": "km200 to mqtt bridge for mqtt-smarthome",
   "main": "km20knx.js",
   "preferGlobal": true,
