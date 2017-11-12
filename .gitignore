@@ -27,3 +27,4 @@ build/Release
 node_modules
 config.yml
 gb135.txt
+km200.env

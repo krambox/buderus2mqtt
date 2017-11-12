@@ -1,13 +1,22 @@
 {
-  "name": "km200knx",
+  "name": "buderus2mqtt",
   "version": "0.0.1",
-  "description": "km200 to knx gateway",
+  "description": "km200 to mqtt bridge fpr mqtt-smarthome",
   "main": "km20knx.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./km20knx.js config.yml"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krambox/buderus2mqtt"
+  },
+  "keywords": [
+    "mqtt",
+    "smarthome",
+    "buderus",
+    "km200"
+  ],
+  "author": "Kai Kramer",
   "license": "MIT",
   "dependencies": {
     "async": "^2.1.5",
@@ -18,6 +27,8 @@
     "node-yaml-config": "^0.0.4",
     "request": "^2.67.0",
     "require-yaml": "^0.0.1",
-    "sleep": "^5.1.0"
+    "sleep": "^5.1.0",
+    "yalm": "^4.0.2",
+    "yargs": "^6.5.0"
   }
 }

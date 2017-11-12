@@ -3,9 +3,22 @@ var request = require('request');
 var MCrypt = require('mcrypt').MCrypt;
 var buffertrim = require('buffertrim');
 
-require('require-yaml');
-var config = require('./config.yml');
-
+var config = require('yargs')
+  .env('KM200')
+  .usage('Scans a KM200 API\n\nUsage: $0 [options]')
+  .describe('p', 'KM200 passcode')
+  .describe('k', 'KM200 host')
+  .describe('h', 'show help')
+  .alias({
+    'h': 'help',
+    'k': 'km200',
+    'p': 'passcode'
+  })
+  .default({
+  })
+  .version()
+  .help('help')
+  .argv;
 
 var Table = require('cli-table');
 var table = new Table({
@@ -13,8 +26,8 @@ var table = new Table({
   colWidths: [60, 16, 25, 10, 6, 6, 6, 12, 80]
 });
 
-var key = Buffer.from(config.km200.key, 'hex');
-var host = config.km200.host;
+var key = Buffer.from(config.passcode, 'hex');
+var host = config.km200;
 var APIs = [
   '/gateway',
   '/system',
@@ -62,9 +75,7 @@ function callKM200 (host, APIs) {
         json.references.forEach(function (e) {
           APIs.unshift(e.id);
         });
-      } /*else if (json.value === undefined) {
-        console.error(json);
-      }*/ else {
+      } else {
         var entry = [
           json.id ? json.id : '',
           json.type ? json.type : '',
