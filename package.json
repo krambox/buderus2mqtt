@@ -3,8 +3,15 @@
   "version": "0.0.1",
   "description": "km200 to mqtt bridge for mqtt-smarthome",
   "main": "km20knx.js",
+  "preferGlobal": true,
+  "bin": "./km20knx.js",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "engineStrict": true,
   "scripts": {
-    "start": "node ./km20knx.js config.yml"
+    "test": "semistandard && exit 0",
+    "start": "node ./km20knx.js"
   },
   "repository": {
     "type": "git",
@@ -13,6 +20,7 @@
   "bugs": {
     "url": "https://github.com/krambox/buderus2mqtt/issues"
   },
+  "homepage": "https://github.com/krambox/buderus2mqtt#readme",
   "keywords": [
     "mqtt",
     "smarthome",
@@ -32,6 +40,13 @@
     "require-yaml": "^0.0.1",
     "sleep": "^5.1.0",
     "yalm": "^4.0.2",
-    "yargs": "^6.5.0"
-  }
+    "yargs": "^10.0.3"
+  },
+  "devDependencies": {
+    "pre-commit": "^1.2.2",
+    "semistandard": "^11.0.0"
+  },
+  "pre-commit": [
+    "test"
+  ]
 }
