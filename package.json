@@ -31,16 +31,14 @@
   "author": "Kai Kramer",
   "license": "MIT",
   "dependencies": {
-    "async": "^2.1.5",
+    "async": "^2.6.0",
     "buffertrim": "^1.0.0",
     "cli-table": "^0.3.1",
-    "mcrypt": "^0.1.9",
+    "mcrypt": "^0.1.13",
     "mqtt": "^2.14.0",
-    "node-yaml-config": "^0.0.4",
-    "request": "^2.67.0",
+    "request": "^2.83.0",
     "require-yaml": "^0.0.1",
-    "sleep": "^5.1.0",
-    "yalm": "^4.0.2",
+    "yalm": "^4.1.0",
     "yargs": "^10.0.3"
   },
   "devDependencies": {
