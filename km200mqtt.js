@@ -54,19 +54,23 @@ var writables = {};
 function mnemonizeWritable (result) {
   if (result.writeable === 1) {
     if (writables[result.id] === null) {
-      if (result.allowedValues) {
-        log.info('Writable: ' + result.id + ' (' + result.type + '): ' + JSON.stringify(result.allowedValues));
-      } else {
-        log.info('Writable: ' + result.id + ' (' + result.type + '): ' + result.minValue + ' - ' + result.maxValue);
-      }
-      writables[result.id] = {
-        valueType: result.type,
-        minValue: result.minValue,
-        maxValue: result.maxValue,
-        allowedValues: result.allowedValues
-      };
+      storeWritable(result);
     }
   }
+}
+
+function storeWritable (result) {
+  if (result.allowedValues) {
+    log.info('Writable: ' + result.id + ' (' + result.type + '): ' + JSON.stringify(result.allowedValues));
+  } else {
+    log.info('Writable: ' + result.id + ' (' + result.type + '): ' + result.minValue + ' - ' + result.maxValue);
+  }
+  writables[result.id] = {
+    valueType: result.type,
+    minValue: result.minValue,
+    maxValue: result.maxValue,
+    allowedValues: result.allowedValues
+  };
 }
 
 mqtt.on('message', (topic, message) => {
