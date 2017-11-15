@@ -3,6 +3,7 @@
 [![NPM version](https://badge.fury.io/js/buderus2mqtt.svg)](http://badge.fury.io/js/buderus2mqtt)
 [![Dependency Status](https://img.shields.io/gemnasium/krambox/buderus2mqtt.svg?maxAge=2592000)](https://gemnasium.com/github.com/krambox/buderus2mqtt)
 [![Build Status](https://travis-ci.org/krambox/buderus2mqtt.svg?branch=master)](https://travis-ci.org/krambox/buderus2mqtt)
+[![Maintainability](https://api.codeclimate.com/v1/badges/323bbf948a25557a2406/maintainability)](https://codeclimate.com/github/krambox/buderus2mqtt/maintainability)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
