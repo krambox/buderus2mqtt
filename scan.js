@@ -66,36 +66,43 @@ function getKM200 (host, api, done) {
   });
 }
 
-function callKM200 (host, APIs) {
+function requestKM200 (host, APIs) {
   var API = APIs.shift();
   getKM200(host, API, function (result, json) {
     console.error(API, APIs.length);
-    if (json !== undefined) {
-      if (json.type === 'refEnum') {
-        json.references.forEach(function (e) {
-          APIs.unshift(e.id);
-        });
-      } else {
-        var entry = [
-          json.id ? json.id : '',
-          json.type ? json.type : '',
-          json.value ? json.value : (json.values ? JSON.stringify(json.values) : ''),
-          json.unitOfMeasure ? json.unitOfMeasure : '',
-          json.recordable ? json.recordable : '',
-          json.writeable ? json.writeable : '',
-          json.minValue ? json.minValue : '',
-          json.maxValue ? json.maxValue : '',
-          json.allowedValues ? JSON.stringify(json.allowedValues) : ''
-        ];
-        table.push(entry);
-      }
-    }
-    if (APIs.length) {
-      callKM200(host, APIs);
-    } else {
-      console.log(table.toString());
-    }
+    if (json !== undefined) analyzeResult(json, APIs);
+    if (APIs.length) requestKM200(host, APIs);
+    else console.log(table.toString());
   });
 }
 
-callKM200(host, APIs);
+function analyzeResult (json, APIs) {
+  if (json.type === 'refEnum') {
+    json.references.forEach(function (e) {
+      APIs.unshift(e.id);
+    });
+  } else buildTableEntry(json);
+}
+
+function buildTableEntry (json) {
+  var entry = [
+    optionalTableString(json.id),
+    optionalTableString(json.type),
+    optionalTableString(json.value),
+    optionalTableString(json.unitOfMeasure),
+    optionalTableString(json.recordable),
+    optionalTableString(json.writeable),
+    optionalTableString(json.minValue),
+    optionalTableString(json.maxValue),
+    optionalTableString(json.allowedValues)
+  ];
+  table.push(entry);
+}
+
+function optionalTableString (element) {
+  if (element === undefined) return '';
+  else if (Array.isArray(element)) return JSON.stringify(element);
+  else return JSON.stringify(element);
+}
+
+requestKM200(host, APIs);

@@ -22,7 +22,7 @@ mqtt.on('connect', function () {
   mqttConnected = true;
 
   log.info('mqtt connected', config.url);
-  mqtt.publish(config.name + '/connected', '1', {retain: true}); // TODO eventually set to '2' if target system already connected
+  mqtt.publish(config.name + '/connected', '1', {retain: true});
 
   log.info('mqtt subscribe', config.name + '/set/#');
   mqtt.subscribe(config.name + '/set/#');
@@ -53,7 +53,7 @@ var writables = {};
 
 function mnemonizeWritable (result) {
   if (result.writeable === 1) {
-    if (writables[result.id] == null) {
+    if (writables[result.id] === null) {
       if (result.allowedValues) {
         log.info('Writable: ' + result.id + ' (' + result.type + '): ' + JSON.stringify(result.allowedValues));
       } else {
@@ -74,7 +74,7 @@ mqtt.on('message', (topic, message) => {
     let url = topic.substring(9);
     let value = message.toString();
     let writable = writables[url];
-    if (writable != null) {
+    if (writable !== null) {
       if ((writable.valueType === 'stringValue' && writable.allowedValues.indexOf(value) !== -1) ||
         (writable.valueType === 'floatValue' && parseFloat(value) >= writable.minValue && parseFloat(value) <= writable.maxValue)) {
         log.info('WRITE: ' + value);
