@@ -37,7 +37,7 @@
     "mcrypt": "^0.1.13",
     "mqtt": "^2.14.0",
     "request": "^2.83.0",
-    "require-yaml": "^0.0.1",
+    "require-yaml": "0.0.1",
     "yalm": "^4.1.0",
     "yargs": "^10.0.3"
   },
