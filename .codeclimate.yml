@@ -9,6 +9,12 @@ engines:
     enabled: true
   fixme:
     enabled: true
+  requiresafe:
+    enabled: true
+  markdownlint:
+    enabled: true
+  nodesecurity:
+    enabled: true
 ratings:
   paths:
   - "**.js"

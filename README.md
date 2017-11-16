@@ -7,13 +7,15 @@
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Written and (C) 2015-17 Kai Kramer, based on an idea and code from Andreas Hahn. Build with https://github.com/hobbyquaker/xyz2mqtt-skeleton from Sebastian Raff.
+Written and (C) 2015-17 Kai Kramer, based on an idea and code from Andreas Hahn.
+Build with https://github.com/hobbyquaker/xyz2mqtt-skeleton from Sebastian Raff.
 
 Provided under the terms of the MIT license.
 
-## Overview 
+## Overview
 
-buderus2mqtt is a gateway between a KM200 Buderus internet gateway and MQTT with the  https://github.com/mqtt-smarthome topic and payload format.
+buderus2mqtt is a gateway between a KM200 Buderus internet gateway and MQTT
+with the  https://github.com/mqtt-smarthome topic and payload format.
 
 ## Installation
 
@@ -68,12 +70,13 @@ KM200_km200=192.168.1.162
 
 ## Scan KM200 
 
-The tool scan. js is used to determine the possible and useful values. This allows you to retrieve the value space of the Installed KM200 and display it in a table on the console. 
+The tool scan. js is used to determine the possible and useful values. This
+allows you to retrieve the value space of the Installed KM200 and display
+it in a table on the console. 
 
 ```
 ./scan.js -p <KEY generated with https://ssl-account.com/km200.andreashahn.info/ > -k 192.168.1.162 > gb135.txt
 ```
-
 
 ## Build and run local Docker container
 
