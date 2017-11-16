@@ -10,6 +10,7 @@ var config = require('./config.js');
 require('require-yaml');
 
 var mqttConnected;
+var km200Connected;
 
 log.setLevel(config.verbosity);
 
@@ -26,6 +27,9 @@ mqtt.on('connect', function () {
 
   log.info('mqtt subscribe', config.name + '/set/#');
   mqtt.subscribe(config.name + '/set/#');
+
+  checkKM200();
+  setInterval(checkKM200, 60000);
 });
 
 mqtt.on('close', function () {
@@ -53,7 +57,8 @@ var writables = {};
 
 function mnemonizeWritable (result) {
   if (result.writeable === 1) {
-    if (writables[result.id] === null) {
+    log.debug('mnemonizeWritable', result);
+    if (writables[result.id] === undefined) {
       storeWritable(result);
     }
   }
@@ -65,17 +70,24 @@ function storeWritable (result) {
   } else {
     log.info('Writable: ' + result.id + ' (' + result.type + '): ' + result.minValue + ' - ' + result.maxValue);
   }
-  writables[result.id] = {
-    valueType: result.type,
-    minValue: result.minValue,
-    maxValue: result.maxValue,
-    allowedValues: result.allowedValues
+  var writable = {
+    km200_valueType: result.type,
+    km200_minValue: result.minValue,
+    km200_maxValue: result.maxValue,
+    km200_allowedValues: result.allowedValues,
+    km200_unitOfMeasure: result.unitOfMeasure
   };
+  writables[result.id] = writable;
+  var topic = 'km200/meta' + result.id;
+  mqtt.publish(topic, JSON.stringify(writable), { retain: true }, function () {
+    log.debug(topic, writable);
+  });
 }
 
 mqtt.on('message', (topic, message) => {
-  if (topic.startsWith('km200/set/')) {
-    let url = topic.substring(9);
+  const topicPrefix = config.name + '/set/';
+  if (topic.startsWith(topicPrefix)) {
+    let url = topic.substring(topicPrefix.length);
     let value = message.toString();
     let writable = writables[url];
     if (writable !== null) {
@@ -116,9 +128,12 @@ function getKM200 (url, done) {
       'User-Agent': 'TeleHeater/2.2.3'
     }
   };
-  log.debug(options);
   request.get(options, function (error, response, body) {
     if (!error && response.statusCode === 200) {
+      if (!km200Connected) {
+        km200Connected = true;
+        mqtt.publish(config.name + '/connected', '2', {retain: true});
+      }
       var result = JSON.parse(buffertrim.trimEnd(desEcb.decrypt(Buffer.from(body, 'base64'), 'base64')).toString());
       mnemonizeWritable(result);
       var topic = 'km200/status' + result.id;
@@ -128,7 +143,7 @@ function getKM200 (url, done) {
         km200_unitOfMeasure: result.unitOfMeasure
       };
       mqtt.publish(topic, JSON.stringify(state), { retain: true }, function () {
-        // log.info(topic, value)
+        log.debug(topic, state);
       });
       done(null);
     } else {
@@ -138,6 +153,7 @@ function getKM200 (url, done) {
 }
 
 function checkKM200 () {
+  log.debug('Start checking');
   async.eachSeries(measurements,
     function (measurement, cb) {
       getKM200(measurement.url, function (done) {
@@ -151,7 +167,3 @@ function checkKM200 () {
     }
   );
 }
-
-checkKM200();
-
-setInterval(checkKM200, 60000);
