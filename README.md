@@ -6,6 +6,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/323bbf948a25557a2406/maintainability)](https://codeclimate.com/github/krambox/buderus2mqtt/maintainability)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![](https://images.microbadger.com/badges/image/krambox/buderus2mqtt.svg)](https://hub.docker.com/r/krambox/buderus2mqtt/)
 
 Written and (C) 2015-17 Kai Kramer, based on an idea and code from Andreas Hahn.
 Build with https://github.com/hobbyquaker/xyz2mqtt-skeleton from Sebastian Raff.
