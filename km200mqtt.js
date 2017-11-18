@@ -88,18 +88,20 @@ function mnemonizeMeta (result) {
 }
 
 function publishMeta (result) {
-  if (typeof (result.id) === 'string' && endsWith(result.id, 'flameCurrent')) {
-    result.unitOfMeasure = 'µA';
+  if (typeof (result.id) === 'string') {
+    if (endsWith(result.id, 'flameCurrent')) {
+      result.unitOfMeasure = 'µA';
+    }
+    var topic = 'km200/meta' + result.id;
+    var metaData = {
+      native: result
+    };
+    metaData.native.value = undefined;
+    metaData.native.id = undefined;
+    mqtt.publish(topic, JSON.stringify(metaData), { retain: true }, function () {
+      log.debug('meta', topic, metaData);
+    });
   }
-  var topic = 'km200/meta' + result.id;
-  var metaData = {
-    native: result
-  };
-  metaData.native.value = undefined;
-  metaData.native.id = undefined;
-  mqtt.publish(topic, JSON.stringify(metaData), { retain: true }, function () {
-    log.debug('meta', topic, metaData);
-  });
 }
 
 function endsWith (str, suffix) {
