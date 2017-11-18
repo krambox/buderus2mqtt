@@ -54,6 +54,7 @@ var km200host = config.km200;
 log.info(km200host);
 
 var writables = {};
+var meta = {};
 
 function mnemonizeWritable (result) {
   if (result.writeable === 1) {
@@ -71,17 +72,38 @@ function storeWritable (result) {
     log.info('Writable: ' + result.id + ' (' + result.type + '): ' + result.minValue + ' - ' + result.maxValue);
   }
   var writable = {
-    km200_valueType: result.type,
-    km200_minValue: result.minValue,
-    km200_maxValue: result.maxValue,
-    km200_allowedValues: result.allowedValues,
-    km200_unitOfMeasure: result.unitOfMeasure
+    valueType: result.type,
+    minValue: result.minValue,
+    maxValue: result.maxValue,
+    allowedValues: result.allowedValues
   };
   writables[result.id] = writable;
+}
+
+function mnemonizeMeta (result) {
+  log.debug('mnemonizeMeta', result);
+  if (meta[result.id] === undefined) {
+    publishMeta(result);
+  }
+}
+
+function publishMeta (result) {
+  if (typeof (result.id) === 'string' && endsWith(result.id, 'flameCurrent')) {
+    result.unitOfMeasure = 'µA';
+  }
   var topic = 'km200/meta' + result.id;
-  mqtt.publish(topic, JSON.stringify(writable), { retain: true }, function () {
-    log.debug(topic, writable);
+  var metaData = {
+    native: result
+  };
+  metaData.native.value = undefined;
+  metaData.native.id = undefined;
+  mqtt.publish(topic, JSON.stringify(metaData), { retain: true }, function () {
+    log.debug('meta', topic, metaData);
   });
+}
+
+function endsWith (str, suffix) {
+  return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
 mqtt.on('message', (topic, message) => {
@@ -136,6 +158,7 @@ function getKM200 (url, done) {
       }
       var result = JSON.parse(buffertrim.trimEnd(desEcb.decrypt(Buffer.from(body, 'base64'), 'base64')).toString());
       mnemonizeWritable(result);
+      mnemonizeMeta(result);
       var topic = 'km200/status' + result.id;
       var state = {
         ts: Math.floor(new Date() / 1000),
