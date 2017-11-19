@@ -111,10 +111,10 @@ function endsWith (str, suffix) {
 mqtt.on('message', (topic, message) => {
   const topicPrefix = config.name + '/set/';
   if (topic.startsWith(topicPrefix)) {
-    let url = topic.substring(topicPrefix.length);
+    let url = topic.substring(topicPrefix.length - 1);
     let value = message.toString();
     let writable = writables[url];
-    if (writable !== null) {
+    if (writable) {
       if ((writable.valueType === 'stringValue' && writable.allowedValues.indexOf(value) !== -1) ||
         (writable.valueType === 'floatValue' && parseFloat(value) >= writable.minValue && parseFloat(value) <= writable.maxValue)) {
         log.info('WRITE: ' + value);
