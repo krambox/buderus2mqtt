@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "pre-commit": "^1.2.2",
-    "semantic-release": "^8.2.3",
+    "semantic-release": "^9.1.1",
     "semistandard": "^11.0.0"
   },
   "pre-commit": [
