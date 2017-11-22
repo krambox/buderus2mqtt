@@ -83,3 +83,7 @@ it in a table on the console.
     docker build -t km200 .
 
     docker run --env-file ./km200.env -it km200 krambox/buderus2mqtt 
+
+    docker run --env-file /Volumes/data/smarthome/km200.env -v /Volumes/data/smarthome:/data --name buderus2mqtt krambox/buderus2mqtt
+
+    docker run --env-file /volume1/data/smarthome/km200.env -v /volume1/data/smarthome:/data --name buderus2mqtt krambox/buderus2mqtt
