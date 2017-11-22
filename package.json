@@ -2,16 +2,16 @@
   "name": "buderus2mqtt",
   "version": "0.0.0-development",
   "description": "km200 to mqtt bridge for mqtt-smarthome",
-  "main": "km20knx.js",
+  "main": "buderus2mqtt.js",
   "preferGlobal": true,
-  "bin": "./km20knx.js",
+  "bin": "./buderus2mqtt.js",
   "engines": {
     "node": ">=6.0.0"
   },
   "engineStrict": true,
   "scripts": {
     "test": "semistandard && exit 0",
-    "start": "node ./km20knx.js",
+    "start": "node ./buderus2mqtt.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
