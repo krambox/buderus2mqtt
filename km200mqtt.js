@@ -94,7 +94,7 @@ function publishMeta (result) {
     }
     var topic = 'km200/meta' + result.id;
     var metaData = {
-      native: result
+      native: JSON.parse(JSON.stringify(result))
     };
     metaData.native.value = undefined;
     metaData.native.id = undefined;
