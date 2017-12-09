@@ -133,7 +133,7 @@ mqtt.on('message', (topic, message) => {
           if (!error) {
             getKM200(url, function done () {});
           }
-          log.info(error, response.statusCode);
+          log.info(error, response);
         });
       } else {
         log.info('Invalid valiue: ' + value);
