@@ -82,8 +82,9 @@ function storeWritable (result) {
 
 function mnemonizeMeta (result) {
   log.debug('mnemonizeMeta', result);
-  if (meta[result.id] === undefined) {
+  if (!meta[result.id]) {
     publishMeta(result);
+    meta[result.id] = true;
   }
 }
 
