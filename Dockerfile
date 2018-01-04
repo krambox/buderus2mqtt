@@ -1,8 +1,7 @@
 #
 # ---- Dependencies ----
 FROM mhart/alpine-node:8 AS dependencies
-RUN apk add --no-cache python build-base
-RUN apk add libmcrypt-dev
+RUN apk add --no-cache python build-base libmcrypt-dev
 
 WORKDIR /root/app
 COPY package.json .
