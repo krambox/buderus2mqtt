@@ -15,7 +15,7 @@ RUN cp -R node_modules prod_node_modules
 
 #
 # ---- Release ----
-FROM mhart/alpine-node:base-8
+FROM mhart/alpine-node:8
 WORKDIR /root/app
 # copy production node_modules
 COPY --from=dependencies /root/app/prod_node_modules ./node_modules
