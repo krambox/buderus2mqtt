@@ -25,7 +25,7 @@ The bridge requires a configuration file with the measuring points. This file sh
 
 In addition, environment variables with the addresses and the key are required.  
 
-    docker run --env-file ./km200.env -d km200 krambox/buderus2mqtt
+    docker run --env-file ./km200.env -v <local data directory with config.yml>:/data  --name buderus2mqtt -d krambox/buderus2mqtt
 
 Environment variables in file km200.env
 
