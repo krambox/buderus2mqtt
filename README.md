@@ -1,5 +1,6 @@
 # mqtt-km200
 
+[![mqtt-smarthome](https://img.shields.io/badge/mqtt-smarthome-blue.svg)](https://github.com/mqtt-smarthome/mqtt-smarthome)
 [![NPM version](https://badge.fury.io/js/buderus2mqtt.svg)](http://badge.fury.io/js/buderus2mqtt)
 [![Dependency Status](https://img.shields.io/gemnasium/krambox/buderus2mqtt.svg?maxAge=2592000)](https://gemnasium.com/github.com/krambox/buderus2mqtt)
 [![Build Status](https://travis-ci.org/krambox/buderus2mqtt.svg?branch=master)](https://travis-ci.org/krambox/buderus2mqtt)
