@@ -36,14 +36,15 @@
     "cli-table": "^0.3.1",
     "mcrypt": "^0.1.13",
     "mqtt": "^2.15.0",
+    "npm-check-updates": "^2.14.1",
     "request": "^2.83.0",
     "require-yaml": "0.0.1",
     "yalm": "^4.1.0",
-    "yargs": "^10.1.0"
+    "yargs": "^11.0.0"
   },
   "devDependencies": {
     "pre-commit": "^1.2.2",
-    "semantic-release": "^11.0.2",
+    "semantic-release": "^12.4.1",
     "semistandard": "^12.0.0"
   },
   "pre-commit": [
