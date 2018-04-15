@@ -17,7 +17,12 @@ log.setLevel(config.verbosity);
 log.info(pkg.name + ' ' + pkg.version + ' starting');
 log.info('mqtt trying to connect', config.url);
 
-var mqtt = Mqtt.connect(config.url, {will: {topic: config.name + '/connected', payload: '0', retain: true}});
+var mqtt = Mqtt.connect(config.url,
+  {
+    will: {topic: config.name + '/connected', payload: '0', retain: true},
+    rejectUnauthorized: !config.insecure
+  }
+);
 
 mqtt.on('connect', function () {
   mqttConnected = true;

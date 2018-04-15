@@ -9,6 +9,8 @@ var config = require('yargs')
   .describe('k', 'KM200 host')
   .describe('c', 'KM200 measurment file')
   .describe('h', 'show help')
+  .describe('insecure', 'allow tls connections with invalid certificates')
+  .boolean('insecure')
   .alias({
     'h': 'help',
     'n': 'name',
