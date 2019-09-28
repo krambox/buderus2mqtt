@@ -10,7 +10,7 @@
   },
   "engineStrict": true,
   "scripts": {
-    "test": "semistandard && exit 0",
+    "test": "",
     "start": "node ./buderus2mqtt.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
