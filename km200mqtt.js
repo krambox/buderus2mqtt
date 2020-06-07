@@ -19,7 +19,7 @@ log.info('mqtt trying to connect', config.url);
 
 var mqtt = Mqtt.connect(config.url,
   {
-    will: {topic: config.name + '/connected', payload: '0', retain: true},
+    will: { topic: config.name + '/connected', payload: '0', retain: true },
     rejectUnauthorized: !config.insecure
   }
 );
@@ -28,7 +28,7 @@ mqtt.on('connect', function () {
   mqttConnected = true;
 
   log.info('mqtt connected', config.url);
-  mqtt.publish(config.name + '/connected', '1', {retain: true});
+  mqtt.publish(config.name + '/connected', '1', { retain: true });
 
   log.info('mqtt subscribe', config.name + '/set/#');
   mqtt.subscribe(config.name + '/set/#');
@@ -61,7 +61,7 @@ log.info(km200host);
 var writables = {};
 var meta = {};
 
-function mnemonizeWritable (result) {
+function mnemonizeWritable(result) {
   if (result.writeable === 1) {
     log.debug('mnemonizeWritable', result);
     if (writables[result.id] === undefined) {
@@ -70,11 +70,13 @@ function mnemonizeWritable (result) {
   }
 }
 
-function storeWritable (result) {
+function storeWritable(result) {
   if (result.allowedValues) {
     log.info('Writable: ' + result.id + ' (' + result.type + '): ' + JSON.stringify(result.allowedValues));
-  } else {
+  } else if (result.minValue) {
     log.info('Writable: ' + result.id + ' (' + result.type + '): ' + result.minValue + ' - ' + result.maxValue);
+  } else {
+    return;
   }
   var writable = {
     valueType: result.type,
@@ -85,7 +87,7 @@ function storeWritable (result) {
   writables[result.id] = writable;
 }
 
-function mnemonizeMeta (result) {
+function mnemonizeMeta(result) {
   log.debug('mnemonizeMeta', result);
   if (!meta[result.id]) {
     publishMeta(result);
@@ -93,7 +95,7 @@ function mnemonizeMeta (result) {
   }
 }
 
-function publishMeta (result) {
+function publishMeta(result) {
   if (typeof (result.id) === 'string') {
     if (endsWith(result.id, 'flameCurrent')) {
       result.unitOfMeasure = 'µA';
@@ -110,11 +112,12 @@ function publishMeta (result) {
   }
 }
 
-function endsWith (str, suffix) {
+function endsWith(str, suffix) {
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
 mqtt.on('message', (topic, message) => {
+  log.info(topic, message.toString())
   const topicPrefix = config.name + '/set/';
   if (topic.startsWith(topicPrefix)) {
     let url = topic.substring(topicPrefix.length - 1);
@@ -137,20 +140,20 @@ mqtt.on('message', (topic, message) => {
         };
         request.post(options, function (error, response, body) {
           if (!error) {
-            getKM200(url, function done () {});
+            getKM200(url, function done() { });
           }
-          log.info(error, response);
+          //log.info(error, response);
         });
       } else {
-        log.info('Invalid valiue: ' + value);
+        log.info('Invalid value: ' + value);
       }
     } else {
-      log.info(url + ' not writavle!');
+      log.info(url + ' not writable!');
     }
   }
 });
 
-function getKM200 (url, done) {
+function getKM200(url, done) {
   var options = {
     url: 'http://' + km200host + url,
     headers: {
@@ -162,7 +165,7 @@ function getKM200 (url, done) {
     if (!error && response.statusCode === 200) {
       if (!km200Connected) {
         km200Connected = true;
-        mqtt.publish(config.name + '/connected', '2', {retain: true});
+        mqtt.publish(config.name + '/connected', '2', { retain: true });
       }
       var result = JSON.parse(buffertrim.trimEnd(desEcb.decrypt(Buffer.from(body, 'base64'), 'base64')).toString());
       mnemonizeWritable(result);
@@ -183,7 +186,7 @@ function getKM200 (url, done) {
   });
 }
 
-function checkKM200 () {
+function checkKM200() {
   log.debug('Start checking');
   async.eachSeries(measurements,
     function (measurement, cb) {
