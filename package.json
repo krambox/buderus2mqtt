@@ -31,7 +31,7 @@
   "author": "Kai Kramer",
   "license": "MIT",
   "dependencies": {
-    "async": "^2.6.0",
+    "async": "^3.2.2",
     "buffertrim": "^1.0.0",
     "cli-table": "^0.3.1",
     "mcrypt": "^0.1.13",
